@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-
+import os
 
 # --------------------------------------------------
 # Page configuration
@@ -67,7 +67,10 @@ st.markdown(
 # Backend URL
 # --------------------------------------------------
 
-BACKEND_URL = "http://127.0.0.1:8000/chat"
+BACKEND_URL = os.getenv(
+    "BACKEND_URL",
+    "http://127.0.0.1:8000/chat"
+)
 
 
 # --------------------------------------------------
