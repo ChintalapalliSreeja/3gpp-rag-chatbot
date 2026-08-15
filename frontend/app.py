@@ -57,7 +57,7 @@ st.markdown(
 st.markdown(
     """
     <div class="subtitle">
-    A Retrieval-Augmented Generation system for intelligent
+    A RAG system for intelligent
     question answering over 3GPP telecommunications standards
     and technical specifications, with responses grounded in
     indexed technical documentation.
