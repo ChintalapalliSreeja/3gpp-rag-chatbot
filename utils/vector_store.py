@@ -1,16 +1,34 @@
 from pathlib import Path
+import os
 
+from dotenv import load_dotenv
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+
+# --------------------------------------------------
+# Environment
+# --------------------------------------------------
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+# Load .env from project root
+load_dotenv(PROJECT_ROOT / ".env")
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+if not OPENAI_API_KEY:
+    raise ValueError(
+        "OPENAI_API_KEY is missing. "
+        "Please add it to the .env file in the project root."
+    )
 
 
 # --------------------------------------------------
 # Paths
 # --------------------------------------------------
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 DATA_DIR = PROJECT_ROOT / "data" / "3gpp"
 
@@ -32,7 +50,9 @@ PDF_FILES = [
 # Embedding model
 # --------------------------------------------------
 
-EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+# IMPORTANT:
+# This must be the same embedding model used by backend/rag.py
+EMBEDDING_MODEL = "text-embedding-3-small"
 
 
 # --------------------------------------------------
@@ -110,14 +130,15 @@ def create_vector_store():
 
 
     # --------------------------------------------------
-    # Create embeddings
+    # Create OpenAI embeddings
     # --------------------------------------------------
 
     print()
-    print("Loading embedding model...")
+    print("Configuring OpenAI embedding model...")
 
-    embeddings = HuggingFaceEmbeddings(
-        model_name=EMBEDDING_MODEL
+    embeddings = OpenAIEmbeddings(
+        model=EMBEDDING_MODEL,
+        api_key=OPENAI_API_KEY
     )
 
 
@@ -160,6 +181,7 @@ def create_vector_store():
     print(f"Documents : {len(PDF_FILES)}")
     print(f"Pages     : {len(all_documents)}")
     print(f"Chunks    : {len(chunks)}")
+    print(f"Embedding : {EMBEDDING_MODEL}")
     print(f"Location  : {VECTOR_DB_DIR}")
 
     print("=" * 70)

@@ -4,8 +4,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from langchain_community.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 
 # ============================================================
@@ -26,7 +25,7 @@ load_dotenv(BASE_DIR / ".env")
 
 FAISS_PATH = BASE_DIR / "data" / "3gpp" / "faiss_index"
 
-EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+EMBEDDING_MODEL = "text-embedding-3-small"
 
 LLM_MODEL = "gpt-4o-mini"
 
@@ -97,17 +96,20 @@ class ThreeGPPRAG:
                 "Please add it to the .env file in the project root."
             )
 
-        print("\nLoading embedding model...")
+        print("\nLoading OpenAI embedding model...")
 
         # ----------------------------------------------------
         # Embedding model
         # ----------------------------------------------------
 
-        self.embeddings = HuggingFaceEmbeddings(
-            model_name=EMBEDDING_MODEL
+        # Use OpenAI embeddings instead of a local Hugging Face model.
+        # This keeps the Render free-tier backend much lighter on RAM.
+        self.embeddings = OpenAIEmbeddings(
+            model=EMBEDDING_MODEL,
+            api_key=api_key
         )
 
-        print("Embedding model loaded.")
+        print("OpenAI embedding model configured.")
 
         # ----------------------------------------------------
         # Load FAISS
