@@ -50,15 +50,19 @@ st.markdown(
 # --------------------------------------------------
 
 st.markdown(
-    '<div class="main-title">📡 3GPP Telecom RAG Assistant</div>',
+    '<div class="main-title">3GPP Telecom RAG Assistant</div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
-    '<div class="subtitle">'
-    'Ask questions about 3GPP telecommunications standards. '
-    'Answers are grounded in the provided 3GPP documentation.'
-    '</div>',
+    """
+    <div class="subtitle">
+    A Retrieval-Augmented Generation system for intelligent
+    question answering over 3GPP telecommunications standards
+    and technical specifications, with responses grounded in
+    indexed technical documentation.
+    </div>
+    """,
     unsafe_allow_html=True
 )
 
@@ -69,8 +73,8 @@ st.markdown(
 
 BACKEND_URL = os.getenv(
     "BACKEND_URL",
-     "https://threegpp-rag-chatbot-nl2c.onrender.com/chat"
     
+ "https://threegpp-rag-chatbot-nl2c.onrender.com/chat"
 )
 
 
