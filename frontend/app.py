@@ -73,8 +73,7 @@ st.markdown(
 
 BACKEND_URL = os.getenv(
     "BACKEND_URL",
-    
- "https://threegpp-rag-chatbot-nl2c.onrender.com/chat"
+"http://127.0.0.1:8000/chat"
 )
 
 
